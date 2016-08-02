@@ -1,4 +1,12 @@
-import { Component, Input, ViewChild, ElementRef, AfterViewInit, OnChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  ChangeDetectionStrategy,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  OnChanges
+} from '@angular/core';
 import * as numeral from 'numeral';
 
 @Component({
@@ -11,7 +19,8 @@ import * as numeral from 'numeral';
       [style.height.px]="size">
     </canvas>
     <div>sin({{ getAngleDeg() }}) = {{ getAngleSin() }}</div>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UnitCircleComponent implements AfterViewInit, OnChanges {
   private canvas: HTMLCanvasElement;

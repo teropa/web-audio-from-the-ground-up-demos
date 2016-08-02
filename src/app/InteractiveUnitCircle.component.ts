@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { UnitCircleComponent } from './UnitCircle.component';
 
 @Component({
@@ -15,7 +15,7 @@ import { UnitCircleComponent } from './UnitCircle.component';
 export class InteractiveUnitCircleComponent {
   @Input() size: number;
   @ViewChild('crc') unitCircle: UnitCircleComponent;
-  angle: number;
+  angle: number = 0;
 
   onMousemove(event: MouseEvent) {
     const eventX = event.clientX - this.unitCircle.canvasLeft;
