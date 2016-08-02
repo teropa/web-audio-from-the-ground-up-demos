@@ -1,4 +1,5 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import * as numeral from 'numeral';
 
 @Component({
   selector: 'snd-unit-circle',
@@ -118,7 +119,7 @@ export class UnitCircleComponent implements AfterViewInit {
   }
 
   getAngleSin() {
-    return Math.sin(this.angle)
+    return numeral(Math.sin(this.angle)).format('#.00')
   }
 
 }
