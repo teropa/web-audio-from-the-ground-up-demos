@@ -1,23 +1,23 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, AfterViewInit, OnChanges } from '@angular/core';
 import * as numeral from 'numeral';
 
 @Component({
   selector: 'snd-unit-circle',
   template: `
     <canvas #cnvs
-      [width]="width"
-      [height]="height"
-      [style.width.px]="width"
-      [style.height.px]="height"
-      (mousemove)="onMousemove($event)">
+      [width]="size"
+      [height]="size"
+      [style.width.px]="size"
+      [style.height.px]="size">
     </canvas>
     <div>sin({{ getAngleDeg() }}) = {{ getAngleSin() }}</div>
   `
 })
-export class UnitCircleComponent implements AfterViewInit {
+export class UnitCircleComponent implements AfterViewInit, OnChanges {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
-  private angle: number = 0;
+  @Input() size: number;
+  @Input() angle: number = 0;
   
   @ViewChild('cnvs')
   set canvasRef(ref: ElementRef) {
@@ -31,22 +31,12 @@ export class UnitCircleComponent implements AfterViewInit {
     this.draw();
   }
 
-  onMousemove(event: MouseEvent) {
-    const canvasLeft = this.canvas.getBoundingClientRect().left;
-    const canvasTop = this.canvas.getBoundingClientRect().top;
-    const eventX = event.clientX - canvasLeft;
-    const eventY = event.clientY - canvasTop;
-    const deltaX = eventX - this.centerX;
-    const deltaY = eventY - this.centerY;
-    this.angle = -Math.atan2(deltaY, deltaX);
-    if (this.angle < 0) {
-      this.angle = Math.PI * 2 + this.angle;
-    } 
+  ngOnChanges() {
     this.draw();
   }
 
   private draw() {
-    this.context.clearRect(0, 0, this.width, this.height);
+    this.context.clearRect(0, 0, this.size, this.size);
 
     const lineEndX = this.centerX + this.radius * Math.cos(-this.angle);
     const lineEndY = this.centerY + this.radius * Math.sin(-this.angle);
@@ -94,24 +84,24 @@ export class UnitCircleComponent implements AfterViewInit {
     this.context.stroke();
   }
 
-  get width() {
-    return 200;
-  }
-
-  get height() {
-    return 200;
-  }
-  
   get centerX() {
-    return Math.floor(this.width / 2);
+    return Math.floor(this.size / 2);
   }
 
   get centerY() {
-    return Math.floor(this.height / 2);
+    return Math.floor(this.size / 2);
   }
 
   get radius() {
-    return Math.min(this.width / 2, this.height / 2) - 1;
+    return Math.min(this.size / 2, this.size / 2) - 1;
+  }
+
+  get canvasLeft() {
+    return this.canvas.getBoundingClientRect().left;
+  }
+
+  get canvasTop() {
+    return this.canvas.getBoundingClientRect().top;
   }
 
   getAngleDeg() {

@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { UnitCircleComponent } from './UnitCircle.component';
+import { InteractiveUnitCircleComponent } from './InteractiveUnitCircle.component';
 
 import '../../public/css/styles.css';
 
 @Component({
   selector: 'snd-app',
-  template: '<snd-unit-circle></snd-unit-circle>',
+  template: '<snd-interactive-unit-circle [size]=200></snd-interactive-unit-circle>',
   styleUrls: ['./app.component.css'],
-  directives: [UnitCircleComponent]
+  directives: [InteractiveUnitCircleComponent]
 })
 export class AppComponent { }
