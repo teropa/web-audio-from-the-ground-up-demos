@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { InteractiveUnitCircleComponent } from './InteractiveUnitCircle.component';
-import { AnimatedUnitCircleComponent } from './AnimatedUnitCircle.component';
+import { SineAnimationComponent } from './SineAnimation.component';
+import { AudioService } from './audio.service.ts';
 
 import '../../public/css/styles.css';
 
@@ -9,10 +10,11 @@ import '../../public/css/styles.css';
   template: `
     <snd-interactive-unit-circle [size]=200>
     </snd-interactive-unit-circle>
-    <snd-animated-unit-circle [size]=200>
-    </snd-animated-unit-circle>
+    <snd-sine-animation [size]=200>
+    </snd-sine-animation>
   `,
   styleUrls: ['./app.component.css'],
-  directives: [InteractiveUnitCircleComponent, AnimatedUnitCircleComponent]
+  directives: [InteractiveUnitCircleComponent, SineAnimationComponent],
+  providers: [AudioService]
 })
 export class AppComponent { }

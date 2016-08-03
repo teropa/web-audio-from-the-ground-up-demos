@@ -1,0 +1,70 @@
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { List } from 'immutable';
+import { UnitCircleComponent } from './UnitCircle.component';
+import { CurveComponent } from './Curve.component';
+import { AudioService } from './audio.service';
+
+@Component({
+  selector: 'snd-sine-animation',
+  template: `
+    <snd-curve
+      [width]="size * 4"
+      [height]="size"
+      [values]="collectedSines"
+      [maxValueCount]="maxCurveValueCount">
+    </snd-curve>
+    <snd-unit-circle
+      [size]=size
+      [angle]=angle>
+    </snd-unit-circle>
+  `,
+  styles: [`
+    :host {
+      display: flex;
+    }
+  `],
+  directives: [UnitCircleComponent, CurveComponent]
+})
+export class SineAnimationComponent implements OnInit, OnDestroy {
+  @Input() size: number;
+  @Input() frequency = 1;
+  angle: number = 0;
+  collectedSines: List<number> = <List<number>>List.of();
+  maxCurveValueCount = 250;
+
+  running = false;
+
+  constructor(private audio: AudioService) {
+  }
+
+  ngOnInit() {
+    this.running = true;
+    this.runNext();
+  }
+
+  ngOnDestroy() {
+    this.running = false;
+  }
+
+  private runNext(lastTime = this.audio.getCurrentTime()) {
+    if (this.running) {
+      const elapsedTime = this.audio.getCurrentTime() - lastTime;
+      const radiansPerSecond = this.frequency * 2 * Math.PI;
+      const radianIncrement = radiansPerSecond * elapsedTime;
+      this.angle += radianIncrement;
+      if (this.angle >= Math.PI * 2) {
+        this.angle = 0;
+      }
+      if (this.collectedSines.size >= this.maxCurveValueCount) {
+        this.collectedSines = this.collectedSines
+          .shift()
+          .push(Math.sin(this.angle));
+      } else {
+        this.collectedSines= this.collectedSines.push(Math.sin(this.angle));
+      }
+      const time = this.audio.getCurrentTime();
+      requestAnimationFrame(() => this.runNext(time)); 
+    }
+  }
+
+}

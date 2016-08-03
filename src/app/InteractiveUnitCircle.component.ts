@@ -18,8 +18,8 @@ export class InteractiveUnitCircleComponent {
   angle: number = 0;
 
   onMousemove(event: MouseEvent) {
-    const eventX = event.clientX - this.unitCircle.canvasLeft;
-    const eventY = event.clientY - this.unitCircle.canvasTop;
+    const eventX = event.clientX - this.unitCircle.getCanvasLeft();
+    const eventY = event.clientY - this.unitCircle.getCanvasTop();
     const deltaX = eventX - this.size / 2;
     const deltaY = eventY - this.size / 2;
     this.angle = -Math.atan2(deltaY, deltaX);

@@ -18,7 +18,7 @@ import * as numeral from 'numeral';
       [style.width.px]="size"
       [style.height.px]="size">
     </canvas>
-    <div>sin({{ getAngleDeg() }}) = {{ getAngleSin() }}</div>
+    <div>sin({{ getAngleRad() }}rad) = sin({{ getAngleDeg() }}°) = {{ getAngleSin() }}</div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -34,6 +34,14 @@ export class UnitCircleComponent implements AfterViewInit, OnChanges {
     this.context = this.canvas.getContext('2d');
   }
 
+  getCanvasLeft() {
+    return this.canvas && this.canvas.getBoundingClientRect().left;
+  }
+
+  getCanvasTop() {
+    return this.canvas && this.canvas.getBoundingClientRect().top;
+  }
+
   ngAfterViewInit() {
     this.context.lineWidth = 2;
     this.context.strokeStyle = '#fff';
@@ -47,78 +55,65 @@ export class UnitCircleComponent implements AfterViewInit, OnChanges {
   private draw() {
     this.context.clearRect(0, 0, this.size, this.size);
 
-    const lineEndX = this.centerX + this.radius * Math.cos(-this.angle);
-    const lineEndY = this.centerY + this.radius * Math.sin(-this.angle);
+    const center = Math.floor(this.size / 2);
+    const radius = this.size / 2 - 1;
 
-    this.drawCircle();
-    this.drawLine(lineEndX, lineEndY);
-    this.drawAngleMarker();
+    const lineEndX = center + radius * Math.cos(-this.angle);
+    const lineEndY = center + radius * Math.sin(-this.angle);
+
+    this.drawCircle(center, radius);
+    this.drawLine(center, lineEndX, lineEndY);
+    this.drawAngleMarker(center, radius);
 
     this.context.save();
     this.context.setLineDash([2, 2]);
-    this.drawAxisMarker();
-    this.drawSinMarker(lineEndX, lineEndY);
+    this.drawAxisMarker(center, radius);
+    this.drawSinMarker(center, lineEndX, lineEndY);
     this.context.restore();
   }
 
-  private drawCircle() {
+  private drawCircle(center: number, radius: number) {
     this.context.beginPath();
-    this.context.arc(this.centerX, this.centerY, this.radius, 0, Math.PI * 2);
+    this.context.arc(center, center, radius, 0, Math.PI * 2);
     this.context.stroke();
   }
 
-  private drawLine(lineEndX: number, lineEndY: number) {
-    this.context.moveTo(this.centerX, this.centerY);
+  private drawLine(center: number, lineEndX: number, lineEndY: number) {
+    this.context.moveTo(center, center);
     this.context.lineTo(lineEndX, lineEndY);
     this.context.stroke();
   }
   
-  private drawAngleMarker() {
+  private drawAngleMarker(center: number, radius: number) {
     this.context.beginPath();
-    this.context.arc(this.centerX, this.centerY, this.radius / 10, 0, Math.PI * 2 - this.angle, true);
+    this.context.arc(center, center, radius / 10, 0, Math.PI * 2 - this.angle, true);
     this.context.stroke();
   }
 
-  private drawSinMarker(lineEndX: number, lineEndY: number) {
+  private drawSinMarker(center: number, lineEndX: number, lineEndY: number) {
     this.context.beginPath();
     this.context.moveTo(lineEndX, lineEndY);
-    this.context.lineTo(lineEndX, this.centerY);
+    this.context.lineTo(lineEndX, center);
     this.context.stroke();
   }
 
-  private drawAxisMarker() {
+  private drawAxisMarker(center: number, radius: number) {
     this.context.beginPath();
-    this.context.moveTo(this.centerX - this.radius, this.centerY);
-    this.context.lineTo(this.centerX + this.radius, this.centerY);
+    this.context.moveTo(center - radius, center);
+    this.context.lineTo(center + radius, center);
     this.context.stroke();
   }
 
-  get centerX() {
-    return Math.floor(this.size / 2);
-  }
-
-  get centerY() {
-    return Math.floor(this.size / 2);
-  }
-
-  get radius() {
-    return Math.min(this.size / 2, this.size / 2) - 1;
-  }
-
-  get canvasLeft() {
-    return this.canvas.getBoundingClientRect().left;
-  }
-
-  get canvasTop() {
-    return this.canvas.getBoundingClientRect().top;
-  }
-
-  getAngleDeg() {
+  private getAngleDeg() {
     return Math.round(this.angle * 180 / Math.PI);
   }
 
-  getAngleSin() {
+  private getAngleRad() {
+    return numeral(this.angle).format('#.0')
+  }
+  private getAngleSin() {
     return numeral(Math.sin(this.angle)).format('#.00')
   }
+
 
 }
