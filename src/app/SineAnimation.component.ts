@@ -27,7 +27,7 @@ import { AudioService } from './audio.service';
 })
 export class SineAnimationComponent implements OnInit, OnDestroy {
   @Input() size: number;
-  @Input() frequency = 1;
+  @Input() frequency: number;
   angle: number = 0;
   collectedSines: List<number> = <List<number>>List.of();
   maxCurveValueCount = 250;
@@ -47,23 +47,30 @@ export class SineAnimationComponent implements OnInit, OnDestroy {
   }
 
   private runNext(lastTime = this.audio.getCurrentTime()) {
+    const step = Math.PI / 75;
     if (this.running) {
-      const elapsedTime = this.audio.getCurrentTime() - lastTime;
-      const radiansPerSecond = this.frequency * 2 * Math.PI;
-      const radianIncrement = radiansPerSecond * elapsedTime;
-      this.angle += radianIncrement;
-      if (this.angle >= Math.PI * 2) {
-        this.angle = 0;
+      let t = lastTime + step;
+      while (t < this.audio.getCurrentTime()) {
+        this.emitStep(step);
+        t += step;
       }
-      if (this.collectedSines.size >= this.maxCurveValueCount) {
-        this.collectedSines = this.collectedSines
-          .shift()
-          .push(Math.sin(this.angle));
-      } else {
-        this.collectedSines= this.collectedSines.push(Math.sin(this.angle));
-      }
-      const time = this.audio.getCurrentTime();
-      requestAnimationFrame(() => this.runNext(time)); 
+      requestAnimationFrame(() => this.runNext(t - step)); 
+    }
+  }
+
+  private emitStep(elapsedTime: number) {
+    const radiansPerSecond = this.frequency * 2 * Math.PI;
+    const radianIncrement = radiansPerSecond * elapsedTime;
+    this.angle += radianIncrement;
+    if (this.angle >= Math.PI * 2) {
+      this.angle = 0;
+    }
+    if (this.collectedSines.size >= this.maxCurveValueCount) {
+      this.collectedSines = this.collectedSines
+        .shift()
+        .push(Math.sin(this.angle));
+    } else {
+      this.collectedSines= this.collectedSines.push(Math.sin(this.angle));
     }
   }
 

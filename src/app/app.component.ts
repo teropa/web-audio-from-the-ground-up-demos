@@ -10,7 +10,7 @@ import '../../public/css/styles.css';
   template: `
     <snd-interactive-unit-circle [size]=200>
     </snd-interactive-unit-circle>
-    <snd-sine-animation [size]=200>
+    <snd-sine-animation [size]=200 [frequency]=1>
     </snd-sine-animation>
   `,
   styleUrls: ['./app.component.css'],
