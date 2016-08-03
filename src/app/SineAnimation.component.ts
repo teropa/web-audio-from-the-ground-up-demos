@@ -63,7 +63,7 @@ export class SineAnimationComponent implements OnInit, OnDestroy {
     const radianIncrement = radiansPerSecond * elapsedTime;
     this.angle += radianIncrement;
     if (this.angle >= Math.PI * 2) {
-      this.angle = 0;
+      this.angle -= Math.PI * 2;
     }
     if (this.collectedSines.size >= this.maxCurveValueCount) {
       this.collectedSines = this.collectedSines
