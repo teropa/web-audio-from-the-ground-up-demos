@@ -47,7 +47,7 @@ export class SineAnimationComponent implements OnInit, OnDestroy {
   }
 
   private runNext(lastTime = this.audio.getCurrentTime()) {
-    const step = Math.PI / 75;
+    const step = Math.PI / 100;
     if (this.running) {
       let t = lastTime + step;
       while (t < this.audio.getCurrentTime()) {
