@@ -2,7 +2,7 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { List } from 'immutable';
 import { UnitCircleComponent } from './UnitCircle.component';
 import { CurveComponent } from './Curve.component';
-import { AudioService } from './audio.service';
+import { AudioService } from '../audio.service';
 
 @Component({
   selector: 'snd-sine-animation',
@@ -70,7 +70,7 @@ export class SineAnimationComponent implements OnInit, OnDestroy {
         .shift()
         .push(Math.sin(this.angle));
     } else {
-      this.collectedSines= this.collectedSines.push(Math.sin(this.angle));
+      this.collectedSines = this.collectedSines.push(Math.sin(this.angle));
     }
   }
 

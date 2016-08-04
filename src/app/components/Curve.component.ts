@@ -28,6 +28,8 @@ export class CurveComponent implements AfterViewInit, OnChanges {
   @Input() height: number;
   @Input() values: List<number>;
   @Input() maxValueCount: number;
+  @Input() rangeMin = -1;
+  @Input() rangeMax = 1;
 
   @ViewChild('cnvs')
   set canvasRef(ref: ElementRef) {
@@ -57,13 +59,15 @@ export class CurveComponent implements AfterViewInit, OnChanges {
   private drawCurve() {
     const step = this.width / this.maxValueCount;
     const firstStep = (this.maxValueCount - this.values.size) * step;
+    const extent = Math.abs(this.rangeMax - this.rangeMin);
 
     this.context.beginPath();
     this.context.moveTo(firstStep, this.height / 2);
     this.values.forEach((value, idx) => {
       const x = firstStep + idx * step;
-      const valueNorm = value * 0.5 + 0.5;
-      const y = this.height - 1 - valueNorm * (this.height - 2);
+      const valueExtent = value - this.rangeMin;
+      const valueRel = valueExtent / extent;
+      const y = this.height - 1 - valueRel * (this.height - 2);
       this.context.lineTo(x, y);
     });
     this.context.stroke();
@@ -76,7 +80,7 @@ export class CurveComponent implements AfterViewInit, OnChanges {
     this.context.stroke();
   }
 
-  getCenterY() {
+  private getCenterY() {
     return this.height / 2;
   }
   

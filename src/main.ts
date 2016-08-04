@@ -2,33 +2,26 @@ import { bootstrap } from '@angular/platform-browser-dynamic';
 import { enableProdMode } from '@angular/core';
 
 import { AppComponent } from './app/app.component';
+import { UnitCircleAppComponent } from './app/UnitCircleApp.component';
+import { SineAnimationAppComponent } from './app/SineAnimationApp.component';
+import { ControlledSineAnimationAppComponent } from './app/ControlledSineAnimationApp.component';
 
 if (process.env.ENV === 'production') {
   enableProdMode();
 }
 
-bootstrap(AppComponent, []);
+const audioCtx = new AudioContext();
 
 
-
-
-let audioContext = new AudioContext();
-let sineBuffer = audioContext.createBuffer(1, 88200, 44100);
-let sineArray = sineBuffer.getChannelData(0);
-let frequency = 440;
-let radiansPerSecond = frequency * 2 * Math.PI;
-for (let n=0 ; n < 88200 ; n++) {
-  let radians = radiansPerSecond * (n / 44100);
-  sineArray[n] = Math.sin(n * 0.0627);
-}
-
-let src = audioContext.createBufferSource();
-src.buffer = sineBuffer;
-src.connect(audioContext.destination);
-src.start();
-
-let osc = audioContext.createOscillator();
-osc.frequency.value = 440;
-osc.connect(audioContext.destination);
-osc.start(audioContext.currentTime + 3);
-osc.stop(audioContext.currentTime + 5);
+bootstrap(AppComponent, [
+  {provide: AudioContext, useValue: audioCtx}
+]);
+bootstrap(UnitCircleAppComponent, [
+  {provide: AudioContext, useValue: audioCtx}
+]);
+bootstrap(SineAnimationAppComponent, [
+  {provide: AudioContext, useValue: audioCtx}
+]);
+bootstrap(ControlledSineAnimationAppComponent, [
+  {provide: AudioContext, useValue: audioCtx}
+]);
