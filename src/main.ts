@@ -1,5 +1,5 @@
 import { bootstrap } from '@angular/platform-browser-dynamic';
-import { enableProdMode } from '@angular/core';
+import { enableProdMode, ComponentMetadata } from '@angular/core';
 
 import { AppComponent } from './app/app.component';
 import { UnitCircleAppComponent } from './app/UnitCircleApp.component';
@@ -11,17 +11,16 @@ if (process.env.ENV === 'production') {
 }
 
 const audioCtx = new AudioContext();
+const provideAudioCtx = {provide: AudioContext, useValue: audioCtx};
 
+function isPresent(component: any) {
+  return Reflect.getMetadata('annotations', component)
+    .filter((a: any) => a instanceof ComponentMetadata)
+    .map((a: any) => a.selector)
+    .filter((selector: string) => !!document.querySelector(selector))[0];
+}
 
-bootstrap(AppComponent, [
-  {provide: AudioContext, useValue: audioCtx}
-]);
-bootstrap(UnitCircleAppComponent, [
-  {provide: AudioContext, useValue: audioCtx}
-]);
-bootstrap(SineAnimationAppComponent, [
-  {provide: AudioContext, useValue: audioCtx}
-]);
-bootstrap(ControlledSineAnimationAppComponent, [
-  {provide: AudioContext, useValue: audioCtx}
-]);
+if (isPresent(AppComponent)) bootstrap(AppComponent, [provideAudioCtx]);
+if (isPresent(UnitCircleAppComponent)) bootstrap(UnitCircleAppComponent, [provideAudioCtx])
+if (isPresent(SineAnimationAppComponent)) bootstrap(SineAnimationAppComponent, [provideAudioCtx]);
+if (isPresent(ControlledSineAnimationAppComponent)) bootstrap(ControlledSineAnimationAppComponent, [provideAudioCtx]);
