@@ -51,11 +51,11 @@ export class SineAnimationComponent implements OnInit, OnDestroy {
     this.running = false;
   }
 
-  private runNext(lastTime = this.audio.getCurrentTime()) {
+  private runNext(lastTime = this.getCurrentTime()) {
     const step = Math.PI / 100;
     if (this.running) {
       let t = lastTime + step;
-      while (t < this.audio.getCurrentTime()) {
+      while (t < this.getCurrentTime()) {
         this.emitStep(step);
         t += step;
       }
@@ -77,6 +77,10 @@ export class SineAnimationComponent implements OnInit, OnDestroy {
     } else {
       this.collectedSines = this.collectedSines.push(Math.sin(this.angle));
     }
+  }
+
+  private getCurrentTime() {
+    return Date.now() / 1000;
   }
 
 }

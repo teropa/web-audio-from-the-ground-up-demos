@@ -11,7 +11,7 @@ if (process.env.ENV === 'production') {
 }
 
 const audioCtx = new AudioContext();
-const provideAudioCtx = {provide: AudioContext, useValue: audioCtx};
+const provideAudioCtx = {provide: 'audioCtx', useValue: audioCtx};
 
 function isPresent(component: any) {
   return Reflect.getMetadata('annotations', component)

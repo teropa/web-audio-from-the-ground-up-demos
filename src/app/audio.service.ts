@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 
 @Injectable()
 export class AudioService {
 
-  constructor(private audioCtx: AudioContext) {
+  constructor(@Inject('audioCtx') private audioCtx: AudioContext) {
   }
-  
+
   getCurrentTime() {
     return this.audioCtx.currentTime;
   }
