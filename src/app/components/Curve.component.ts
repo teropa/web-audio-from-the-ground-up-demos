@@ -62,13 +62,16 @@ export class CurveComponent implements AfterViewInit, OnChanges {
     const extent = Math.abs(this.rangeMax - this.rangeMin);
 
     this.context.beginPath();
-    this.context.moveTo(firstStep, this.height / 2);
     this.values.forEach((value, idx) => {
       const x = firstStep + idx * step;
       const valueExtent = value - this.rangeMin;
       const valueRel = valueExtent / extent;
       const y = this.height - 1 - valueRel * (this.height - 2);
-      this.context.lineTo(x, y);
+      if (idx === 0) {
+        this.context.moveTo(x, y);
+      } else {
+        this.context.lineTo(x, y);
+      }
     });
     this.context.stroke();
   }
