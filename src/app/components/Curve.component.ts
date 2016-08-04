@@ -49,10 +49,7 @@ export class CurveComponent implements AfterViewInit, OnChanges {
 
   private draw() {
     this.context.clearRect(0, 0, this.width, this.height);
-    this.context.save();
-    this.context.setLineDash([2, 2]);
     this.drawAxisMarker();
-    this.context.restore();
     this.drawCurve();
   }
 
@@ -77,11 +74,16 @@ export class CurveComponent implements AfterViewInit, OnChanges {
   }
 
   private drawAxisMarker() {
+    this.context.save();
+    this.context.setLineDash([2, 2]);
+    this.context.strokeStyle = '#888';
     this.context.beginPath();
     this.context.moveTo(0, this.getCenterY());
     this.context.lineTo(this.width, this.getCenterY());
     this.context.stroke();
+    this.context.restore();
   }
+
 
   private getCenterY() {
     return this.height / 2;

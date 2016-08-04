@@ -15,7 +15,7 @@ import { UnitCircleComponent } from './UnitCircle.component';
 export class InteractiveUnitCircleComponent {
   @Input() size: number;
   @ViewChild('crc') unitCircle: UnitCircleComponent;
-  angle: number = 0;
+  angle: number = Math.PI / 4;
 
   onMousemove(event: MouseEvent) {
     const eventX = event.clientX - this.unitCircle.getCanvasLeft();

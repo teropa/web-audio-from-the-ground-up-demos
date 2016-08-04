@@ -11,11 +11,15 @@ import { AudioService } from '../audio.service';
       [width]="size * 4"
       [height]="size"
       [values]="collectedSines"
-      [maxValueCount]="maxCurveValueCount">
+      [maxValueCount]="maxCurveValueCount"
+      [style.marginTop.px]="numbersHeight">
     </snd-curve>
     <snd-unit-circle
       [size]=size
-      [angle]=angle>
+      [numbersHeight]=numbersHeight
+      [angle]=angle
+      [connectHorizontal]=true
+      [includeDegNumbers]=false>
     </snd-unit-circle>
   `,
   styles: [`
@@ -31,6 +35,7 @@ export class SineAnimationComponent implements OnInit, OnDestroy {
   angle: number = 0;
   collectedSines: List<number> = <List<number>>List.of();
   maxCurveValueCount = 250;
+  numbersHeight = 20;
 
   running = false;
 

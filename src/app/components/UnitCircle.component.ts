@@ -12,22 +12,40 @@ import * as numeral from 'numeral';
 @Component({
   selector: 'snd-unit-circle',
   template: `
+    <div class="numbers" [style.height.px]="numbersHeight">
+      <span *ngIf="includeDegNumbers">sin({{ getAngleDeg() }}°) =</span>
+      sin({{ getAngleRad() }}rad) ≈
+      <span class="sin">{{ getAngleSin() }}</span>
+    </div>
     <canvas #cnvs
       [width]="size"
       [height]="size"
       [style.width.px]="size"
       [style.height.px]="size">
     </canvas>
-    <div>sin({{ getAngleRad() }}rad) = sin({{ getAngleDeg() }}°) = {{ getAngleSin() }}</div>
   `,
+  styles: [`
+    .numbers {
+      margin-bottom: 3px;
+      text-align: center;
+      font-size: 0.7em;
+      font-style: italic;
+    }
+    .sin {
+      color: #ED146F;
+    }
+  `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UnitCircleComponent implements AfterViewInit, OnChanges {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
   @Input() size: number;
+  @Input() numbersHeight = 20;
   @Input() angle: number = 0;
-  
+  @Input() connectHorizontal = false;
+  @Input() includeDegNumbers = true;
+
   @ViewChild('cnvs')
   set canvasRef(ref: ElementRef) {
     this.canvas = ref.nativeElement;
@@ -64,12 +82,8 @@ export class UnitCircleComponent implements AfterViewInit, OnChanges {
     this.drawCircle(center, radius);
     this.drawLine(center, lineEndX, lineEndY);
     this.drawAngleMarker(center, radius);
-
-    this.context.save();
-    this.context.setLineDash([2, 2]);
-    this.drawAxisMarker(center, radius);
+    this.drawAxisMarkers(center, radius);
     this.drawSinMarker(center, lineEndX, lineEndY);
-    this.context.restore();
   }
 
   private drawCircle(center: number, radius: number) {
@@ -91,17 +105,34 @@ export class UnitCircleComponent implements AfterViewInit, OnChanges {
   }
 
   private drawSinMarker(center: number, lineEndX: number, lineEndY: number) {
+    this.context.save();
+    this.context.strokeStyle = '#ED146F';
     this.context.beginPath();
     this.context.moveTo(lineEndX, lineEndY);
-    this.context.lineTo(lineEndX, center);
+    if (this.connectHorizontal) {
+      this.context.setLineDash([1, 4]);
+      this.context.lineTo(0, lineEndY);
+    } else {
+      this.context.lineTo(lineEndX, center);
+    }
     this.context.stroke();
+    this.context.restore();
   }
 
-  private drawAxisMarker(center: number, radius: number) {
+  private drawAxisMarkers(center: number, radius: number) {
     this.context.beginPath();
-    this.context.moveTo(center - radius, center);
+    this.context.moveTo(center, center);
     this.context.lineTo(center + radius, center);
     this.context.stroke();
+    
+    this.context.save();
+    this.context.setLineDash([2, 2]);
+    this.context.strokeStyle = '#888';
+    this.context.beginPath();
+    this.context.moveTo(center, center);
+    this.context.lineTo(center - radius, center);
+    this.context.stroke();
+    this.context.restore();
   }
 
   private getAngleDeg() {
