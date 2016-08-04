@@ -39,7 +39,7 @@ export class CurveComponent implements AfterViewInit, OnChanges {
 
   ngAfterViewInit() {
     this.context.lineWidth = 2;
-    this.context.strokeStyle = '#fff';
+    this.context.strokeStyle = '#000';
     this.draw();
   }
 
