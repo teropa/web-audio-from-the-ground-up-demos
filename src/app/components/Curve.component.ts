@@ -5,7 +5,8 @@ import {
   ViewChild,
   ElementRef,
   AfterViewInit,
-  OnChanges
+  OnChanges,
+  HostListener
 } from '@angular/core';
 import { List } from 'immutable';
 
@@ -24,12 +25,15 @@ import { List } from 'immutable';
 export class CurveComponent implements AfterViewInit, OnChanges {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
-  @Input() width: number;
   @Input() height: number;
   @Input() values: List<number>;
   @Input() maxValueCount: number;
   @Input() rangeMin = -1;
   @Input() rangeMax = 1;
+  width: number;
+
+  constructor(private elRef: ElementRef) {
+  }
 
   @ViewChild('cnvs')
   set canvasRef(ref: ElementRef) {
@@ -40,11 +44,17 @@ export class CurveComponent implements AfterViewInit, OnChanges {
   ngAfterViewInit() {
     this.context.lineWidth = 2;
     this.context.strokeStyle = '#000';
+    this.width = this.elRef.nativeElement.offsetWidth;
     this.draw();
   }
 
   ngOnChanges() {
     this.draw();
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.width = this.elRef.nativeElement.offsetWidth;
   }
 
   private draw() {

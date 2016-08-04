@@ -7,6 +7,11 @@ import { InteractiveUnitCircleComponent } from './components/InteractiveUnitCirc
     <snd-interactive-unit-circle [size]=size>
     </snd-interactive-unit-circle>
   `,
+  styles: [`
+    :host {
+      display: block;
+    }
+  `],
   directives: [InteractiveUnitCircleComponent]
 })
 export class UnitCircleAppComponent {

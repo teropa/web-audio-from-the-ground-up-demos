@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, HostBinding, OnInit, OnDestroy } from '@angular/core';
 import { List } from 'immutable';
 import { UnitCircleComponent } from './UnitCircle.component';
 import { CurveComponent } from './Curve.component';
@@ -8,30 +8,48 @@ import { AudioService } from '../audio.service';
   selector: 'snd-sine-animation',
   template: `
     <snd-curve
-      [width]="size * 4"
       [height]="size"
       [values]="collectedSines"
       [maxValueCount]="maxCurveValueCount"
-      [style.marginTop.px]="numbersHeight">
+      [style.marginTop.px]="numbersHeight"
+      [style.right.px]="size">
     </snd-curve>
     <snd-unit-circle
       [size]=size
       [numbersHeight]=numbersHeight
       [angle]=angle
       [connectHorizontal]=true
-      [includeDegNumbers]=false>
+      [includeDegNumbers]=false
+      [style.width.px]="size">
     </snd-unit-circle>
   `,
   styles: [`
     :host {
-      display: flex;
+      display: block;
+      position: relative;
+    }
+    snd-curve {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+    }
+    snd-unit-circle {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
     }
   `],
   directives: [UnitCircleComponent, CurveComponent]
 })
 export class SineAnimationComponent implements OnInit, OnDestroy {
-  @Input() size: number;
-  @Input() frequency: number;
+  @Input()
+  size: number;
+
+  @Input()
+  frequency: number;
+
   angle: number = 0;
   collectedSines: List<number> = <List<number>>List.of();
   maxCurveValueCount = 250;
@@ -49,6 +67,11 @@ export class SineAnimationComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.running = false;
+  }
+
+  @HostBinding('style.height.px')
+  get fullHeight() {
+    return this.size + this.numbersHeight;
   }
 
   private runNext(lastTime = this.getCurrentTime()) {
