@@ -1,16 +1,20 @@
 import { Component, ElementRef } from '@angular/core';
-import { AudibleFrequencyTesterComponent } from './components/AudibleFrequencyTester.component';
+import { ControlledPlayerComponent } from './components/ControlledPlayer.component';
 import { AudioService } from './audio.service';
+import { SinewavePlayer } from './SineWavePlayer.service';
 
 @Component({
   selector: 'snd-audible-frequency-tester-app',
   template: `
-    <snd-audible-frequency-tester>
-    </snd-audible-frequency-tester>
+    <snd-controlled-player [player]=player>
+    </snd-controlled-player>
   `,
-  directives: [AudibleFrequencyTesterComponent],
-  providers: [AudioService]
+  directives: [ControlledPlayerComponent],
+  providers: [AudioService, SinewavePlayer]
 })
 export class AudibleFrequencyTesterAppComponent {
+
+  constructor(public player: SinewavePlayer) {
+  }
 
 }

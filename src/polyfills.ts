@@ -2,6 +2,7 @@ import 'core-js/es6';
 import 'reflect-metadata';
 require('zone.js/dist/zone');
 require('@mohayonao/web-audio-api-shim');
+require('whatwg-fetch');
 
 if (process.env.ENV === 'production') {
   // Production

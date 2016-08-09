@@ -1,9 +1,16 @@
 import { Injectable, Inject } from '@angular/core';
 
+
+// Augmenting TypeScript's obsolete Web Audio types
+interface FixedAudioContext extends AudioContext {
+  decodeAudioData: (a: ArrayBuffer) => Promise<AudioBuffer>
+}
+
+
 @Injectable()
 export class AudioService {
 
-  constructor(@Inject('audioCtx') private audioCtx: AudioContext) {
+  constructor(@Inject('audioCtx') private audioCtx: FixedAudioContext) {
   }
 
   getCurrentTime() {
@@ -24,6 +31,20 @@ export class AudioService {
     oscillator.connect(this.audioCtx.destination);
     oscillator.start();
     return oscillator;
+  }
+
+  getBuffer(url: string) {
+    return fetch(url)
+      .then(res => res.arrayBuffer())
+      .then(buf => this.audioCtx.decodeAudioData(buf));
+  }
+
+  getBufferSource(buf: AudioBuffer) {
+    const source = this.audioCtx.createBufferSource();
+    source.buffer = buf;
+    source.connect(this.audioCtx.destination);
+    source.start();
+    return source;
   }
 
 }
