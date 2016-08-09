@@ -5,6 +5,7 @@ import { AppComponent } from './app/app.component';
 import { UnitCircleAppComponent } from './app/UnitCircleApp.component';
 import { SineAnimationAppComponent } from './app/SineAnimationApp.component';
 import { ControlledSineAnimationAppComponent } from './app/ControlledSineAnimationApp.component';
+import { AudibleFrequencyTesterAppComponent } from './app/AudibleFrequencyTesterApp.component';
 
 if (process.env.ENV === 'production') {
   enableProdMode();
@@ -24,3 +25,4 @@ if (isPresent(AppComponent)) bootstrap(AppComponent, [provideAudioCtx]);
 if (isPresent(UnitCircleAppComponent)) bootstrap(UnitCircleAppComponent, [provideAudioCtx])
 if (isPresent(SineAnimationAppComponent)) bootstrap(SineAnimationAppComponent, [provideAudioCtx]);
 if (isPresent(ControlledSineAnimationAppComponent)) bootstrap(ControlledSineAnimationAppComponent, [provideAudioCtx]);
+if (isPresent(AudibleFrequencyTesterAppComponent)) bootstrap(AudibleFrequencyTesterAppComponent, [provideAudioCtx]);

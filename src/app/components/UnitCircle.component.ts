@@ -26,7 +26,6 @@ import * as numeral from 'numeral';
   `,
   styles: [`
     .numbers {
-      margin-bottom: 3px;
       text-align: center;
       font-size: 0.7em;
       font-style: italic;

@@ -7,7 +7,8 @@ import { UnitCircleComponent } from './UnitCircle.component';
     <snd-unit-circle #crc
       [size]=size
       [angle]=angle
-      (mousemove)="onMousemove($event)">
+      (mousemove)="onMousemove($event)"
+      (touchmove)="onTouchmove($event)">
     </snd-unit-circle>
   `,
   directives: [UnitCircleComponent]
@@ -18,8 +19,17 @@ export class InteractiveUnitCircleComponent {
   angle: number = Math.PI / 4;
 
   onMousemove(event: MouseEvent) {
-    const eventX = event.clientX - this.unitCircle.getCanvasLeft();
-    const eventY = event.clientY - this.unitCircle.getCanvasTop();
+    this.onMove(event.clientX, event.clientY);
+  }
+
+  onTouchmove(event: TouchEvent) {
+    this.onMove(event.touches[0].clientX, event.touches[0].clientY);
+    event.preventDefault();
+  }
+
+  private onMove(clientX: number, clientY: number) {
+    const eventX = clientX - this.unitCircle.getCanvasLeft();
+    const eventY = clientY - this.unitCircle.getCanvasTop();
     const deltaX = eventX - this.size / 2;
     const deltaY = eventY - this.size / 2;
     this.angle = -Math.atan2(deltaY, deltaX);
@@ -27,5 +37,5 @@ export class InteractiveUnitCircleComponent {
       this.angle = Math.PI * 2 + this.angle;
     } 
   }
-
+  
 }

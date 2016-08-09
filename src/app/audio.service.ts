@@ -18,4 +18,12 @@ export class AudioService {
     oscillator.stop(this.getCurrentTime() + duration);
   }
 
+  getSinewaveOscillator(frequency: number) {
+    const oscillator = this.audioCtx.createOscillator();
+    oscillator.frequency.value = frequency;
+    oscillator.connect(this.audioCtx.destination);
+    oscillator.start();
+    return oscillator;
+  }
+
 }
