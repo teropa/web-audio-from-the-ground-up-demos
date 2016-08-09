@@ -1,12 +1,26 @@
 import { Component } from '@angular/core';
+import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button';
+import { MD_INPUT_DIRECTIVES } from '@angular2-material/input';
 import { AudioService } from '../audio.service';
 
 @Component({
   selector: 'snd-audible-frequency-tester',
   template: `
-    <button (click)="startStop()">{{ getStartStopLabel() }}</button>
-    <input type="range" [(ngModel)]="frequency" (ngModelChange)="onFrequencyChange()" min="15" max="25000" step="1">
-  `
+    <button md-raised-button (click)="startStop()">{{ getStartStopLabel() }}</button>
+    <label>
+      <input type="range" [(ngModel)]="frequency" (ngModelChange)="onFrequencyChange()" min="5" max="25000" step="1">
+      {{ frequency }} Hz
+    </label>
+  `,
+  styles: [`
+    :host {
+      display: block;
+    }
+    input[type=range] {
+      width: calc(100% - 200px);
+    }
+  `],
+  directives: [MD_BUTTON_DIRECTIVES]
 })
 export class AudibleFrequencyTesterComponent {
   frequency = 440;
