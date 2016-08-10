@@ -5,7 +5,7 @@ import { AudioService } from './audio.service.ts';
 import '../../public/css/styles.css';
 
 @Component({
-  selector: 'snd-app',
+  selector: 'snd-octave-pitch-buttons-app',
   template: `
     <snd-octave-tone-buttons>
     </snd-octave-tone-buttons>
@@ -16,4 +16,6 @@ import '../../public/css/styles.css';
   ],
   providers: [AudioService]
 })
-export class AppComponent { }
+export class OctavePitchButtonsAppComponent {
+
+}

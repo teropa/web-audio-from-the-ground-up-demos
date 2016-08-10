@@ -2,21 +2,20 @@ import {
   Component,
   Input,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   ViewChild,
   ElementRef,
   AfterViewInit,
   OnChanges,
   HostListener
 } from '@angular/core';
-import { List } from 'immutable';
+import { Seq } from 'immutable';
 
 @Component({
   selector: 'snd-curve',
   template: `
     <canvas #cnvs
-      [width]="width"
       [height]="height"
-      [style.width.px]="width"
       [style.height.px]="height">
     </canvas>
   `,
@@ -26,13 +25,14 @@ export class CurveComponent implements AfterViewInit, OnChanges {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
   @Input() height: number;
-  @Input() values: List<number>;
+  @Input() values: Seq<number, number>;
   @Input() maxValueCount: number;
   @Input() rangeMin = -1;
   @Input() rangeMax = 1;
-  width: number;
+  @Input() drawAxis = true;
+  width: number = 0;
 
-  constructor(private elRef: ElementRef) {
+  constructor(private elRef: ElementRef, private chgRef: ChangeDetectorRef) {
   }
 
   @ViewChild('cnvs')
@@ -44,8 +44,7 @@ export class CurveComponent implements AfterViewInit, OnChanges {
   ngAfterViewInit() {
     this.context.lineWidth = 2;
     this.context.strokeStyle = '#000';
-    this.width = this.elRef.nativeElement.offsetWidth;
-    this.draw();
+    this.onResize();
   }
 
   ngOnChanges() {
@@ -55,16 +54,24 @@ export class CurveComponent implements AfterViewInit, OnChanges {
   @HostListener('window:resize')
   onResize() {
     this.width = this.elRef.nativeElement.offsetWidth;
+    this.canvas.width = this.width;
+    this.canvas.style.width = `${this.width}px`;
+    this.draw();
   }
 
   private draw() {
     this.context.clearRect(0, 0, this.width, this.height);
-    this.drawAxisMarker();
+    if (this.drawAxis) {
+      this.drawAxisMarker();
+    }
     this.drawCurve();
   }
 
   private drawCurve() {
-    const step = this.width / this.maxValueCount;
+    if (!this.width || !this.values) {
+      return;
+    }
+    const step = this.width / (this.maxValueCount - 1);
     const firstStep = (this.maxValueCount - this.values.size) * step;
     const extent = Math.abs(this.rangeMax - this.rangeMin);
 

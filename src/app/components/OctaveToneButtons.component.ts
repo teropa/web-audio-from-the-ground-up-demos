@@ -1,25 +1,39 @@
-import { Component } from '@angular/core';
-import { List } from 'immutable';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { List, Range } from 'immutable';
 import { ToneButtonComponent } from './ToneButton.component';
 import { CurveComponent } from './Curve.component';
 
 @Component({
   selector: 'snd-octave-tone-buttons',
   template: `
-    <snd-tone-button
-      *ngFor="let note of notes"
-      [note]=note>
-    </snd-tone-button>
+    <div class="tone-buttons">
+      <snd-tone-button
+        *ngFor="let note of notes"
+        [note]=note>
+      </snd-tone-button>
+    </div>
     <snd-curve
-      [width]="800"
       [height]="200"
-      [values]="getCurveValues()"
-      [maxValueCount]="getCurveValues().size"
+      [values]="curveValues"
+      [maxValueCount]="curveValues.size"
       [rangeMin]="440 / 2 / 2 / 2"
-      [rangeMax]="440 * 2 * 2 * 2 * 2 * 2">
+      [rangeMax]="440 * 2 * 2 * 2 * 2 * 2"
+      [drawAxis]=false>
     </snd-curve>
   `,
-  directives: [ToneButtonComponent, CurveComponent]
+  styles: [`
+    :host { display: block; }
+    snd-curve {
+      display: block;
+    }
+    .tone-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+  `],
+  directives: [ToneButtonComponent, CurveComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OctaveToneButtonsComponent {
   notes = List.of(
@@ -33,8 +47,11 @@ export class OctaveToneButtonsComponent {
     {note: 'A8', frequency: 440 * 2 * 2 * 2 * 2},
     {note: 'A9', frequency: 440 * 2 * 2 * 2 * 2 * 2}
   )
-
-  getCurveValues() {
-    return this.notes.map(n => n.frequency);
+  curveValues = this.interpolateCurveValues();
+ 
+  private interpolateCurveValues() {
+    const minFreq = this.notes.first().frequency;
+    return Range(0, (this.notes.size - 1) * 12)
+      .map(step => minFreq * Math.pow(2, step/12));
   }
 }

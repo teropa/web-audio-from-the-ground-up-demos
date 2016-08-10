@@ -11,6 +11,7 @@ import { AudioService } from '../audio.service';
       [height]="size"
       [values]="collectedSines"
       [maxValueCount]="maxCurveValueCount"
+      [drawAxis]=true
       [style.marginTop.px]="numbersHeight"
       [style.right.px]="size">
     </snd-curve>
