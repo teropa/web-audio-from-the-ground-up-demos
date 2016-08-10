@@ -6,17 +6,18 @@ import { SineAnimationComponent } from './SineAnimation.component';
   template: `
     <label class="freq-control">
       <input type="range" [(ngModel)]="frequency" min="0" max="4" step="0.1">
-      {{ frequency }} Hz
+      <span class="lbl">{{ frequency }} Hz</span>
     </label>
     <snd-sine-animation [size]=size [frequency]=frequency>
     </snd-sine-animation>
   `,
   styles: [`
     .freq-control {
-      float: right;
+      text-align: right;
     }
-    snd-sine-animation {
-      margin-top: 40px;
+    .lbl {
+      display: inline-block;
+      min-width: 75px;
     }
   `],
   directives: [SineAnimationComponent]

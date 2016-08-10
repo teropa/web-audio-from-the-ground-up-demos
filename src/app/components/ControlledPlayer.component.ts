@@ -13,15 +13,26 @@ import { SoundPlayer } from '../SoundPlayer';
              [min]="player.controlValueMin"
              [max]="player.controlValueMax"
              [step]="player.controlValueStep">
-      {{ player.controlValue }}{{ player.controlValueUnit }}
+      <span class="lbl">{{ player.controlValue }}{{ player.controlValueUnit }}</span>
     </label>
   `,
   styles: [`
     :host {
-      display: block;
+      display: flex;
     }
-    input[type=range] {
-      width: calc(100% - 200px);
+    button {
+      flex: 1;
+    }
+    label {
+      flex: 4;
+      text-align: right;
+    }
+    input {
+      width: calc(100% - 130px);
+    }
+    .lbl {
+      display: inline-block;
+      min-width: 75px;
     }
   `],
   directives: [MD_BUTTON_DIRECTIVES]

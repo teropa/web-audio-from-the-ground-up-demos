@@ -1,10 +1,10 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { List, Range } from 'immutable';
 import { ToneButtonComponent } from './ToneButton.component';
 import { CurveComponent } from './Curve.component';
 
 @Component({
-  selector: 'snd-octave-tone-buttons',
+  selector: 'snd-pitch-frequency-scale',
   template: `
     <div class="tone-buttons">
       <snd-tone-button
@@ -13,11 +13,11 @@ import { CurveComponent } from './Curve.component';
       </snd-tone-button>
     </div>
     <snd-curve
-      [height]="200"
-      [values]="curveValues"
-      [maxValueCount]="curveValues.size"
-      [rangeMin]="440 / 2 / 2 / 2"
-      [rangeMax]="440 * 2 * 2 * 2 * 2 * 2"
+      [height]="175"
+      [values]="interpolateCurveValues()"
+      [maxValueCount]="interpolateCurveValues().size"
+      [rangeMin]="notes.first().frequency"
+      [rangeMax]="notes.last().frequency"
       [drawAxis]=false>
     </snd-curve>
   `,
@@ -35,23 +35,13 @@ import { CurveComponent } from './Curve.component';
   directives: [ToneButtonComponent, CurveComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OctaveToneButtonsComponent {
-  notes = List.of(
-    {note: 'A1', frequency: 440 / 2 / 2 / 2},
-    {note: 'A2', frequency: 440 / 2 / 2},
-    {note: 'A3', frequency: 440  / 2},
-    {note: 'A4', frequency: 440},
-    {note: 'A5', frequency: 440 * 2},
-    {note: 'A6', frequency: 440 * 2 * 2},
-    {note: 'A7', frequency: 440 * 2 * 2 * 2},
-    {note: 'A8', frequency: 440 * 2 * 2 * 2 * 2},
-    {note: 'A9', frequency: 440 * 2 * 2 * 2 * 2 * 2}
-  )
-  curveValues = this.interpolateCurveValues();
- 
+export class PitchFrequencyScaleComponent {
+  @Input() notes: List<{frequency: number, note: string}>;
+  @Input() noteScale: number;
+
   private interpolateCurveValues() {
     const minFreq = this.notes.first().frequency;
-    return Range(0, (this.notes.size - 1) * 12)
+    return Range(0, (this.notes.size - 1) * this.noteScale)
       .map(step => minFreq * Math.pow(2, step/12));
   }
 }

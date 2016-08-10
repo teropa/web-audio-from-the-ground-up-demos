@@ -7,6 +7,7 @@ import { ControlledSineAnimationAppComponent } from './app/ControlledSineAnimat
 import { AudibleFrequencyTesterAppComponent } from './app/AudibleFrequencyTesterApp.component';
 import { ChipmunkStretcherAppComponent } from './app/ChipmunkStretcherApp.component';
 import { OctavePitchButtonsAppComponent } from './app/OctavePitchButtonsApp.component';
+import { SingleOctavePitchButtonsAppComponent } from './app/SingleOctavePitchButtonsApp.component';
 
 if (process.env.ENV === 'production') {
   enableProdMode();
@@ -28,3 +29,4 @@ if (isPresent(ControlledSineAnimationAppComponent)) bootstrap(ControlledSineAnim
 if (isPresent(AudibleFrequencyTesterAppComponent)) bootstrap(AudibleFrequencyTesterAppComponent, [provideAudioCtx]);
 if (isPresent(ChipmunkStretcherAppComponent)) bootstrap(ChipmunkStretcherAppComponent, [provideAudioCtx]);
 if (isPresent(OctavePitchButtonsAppComponent)) bootstrap(OctavePitchButtonsAppComponent, [provideAudioCtx]);
+if (isPresent(SingleOctavePitchButtonsAppComponent)) bootstrap(SingleOctavePitchButtonsAppComponent, [provideAudioCtx]);
