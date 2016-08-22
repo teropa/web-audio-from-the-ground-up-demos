@@ -8,7 +8,7 @@ const sample = require('../samples/alphabet.mp3');
 @Component({
   selector: 'snd-chipmunk-stretcher-app',
   template: `
-    <snd-controlled-player *ngIf="player.buffer" [player]="player">
+    <snd-controlled-player [player]="player">
     </snd-controlled-player>
   `,
   providers: [AudioService, SamplePlayer],
@@ -21,6 +21,8 @@ export class ChipmunkStretcherAppComponent implements OnInit {
 
   ngOnInit() {
     this.audio.getBuffer(sample)
-      .then(buf => this.player.init(buf));
+      .then(buf => {
+        this.player.init(buf)
+      });
   }
 }

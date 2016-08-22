@@ -8,6 +8,10 @@ import { AudibleFrequencyTesterAppComponent } from './app/AudibleFrequencyTeste
 import { ChipmunkStretcherAppComponent } from './app/ChipmunkStretcherApp.component';
 import { OctavePitchButtonsAppComponent } from './app/OctavePitchButtonsApp.component';
 import { SingleOctavePitchButtonsAppComponent } from './app/SingleOctavePitchButtonsApp.component';
+import { FrequencyCurveSingleRampApp } from './app/FrequencyCurveSingleRampApp.component';
+import { FrequencyCurveTwoRampsApp } from './app/FrequencyCurveTwoRampsApp.component';
+import { FrequencyCurveTwoJoinedRampsApp } from './app/FrequencyCurveTwoJoinedRampsApp.component';
+import { FrequencyCurveTwoExponentialRampsApp } from './app/FrequencyCurveTwoExponentialRampsApp.component';
 
 if (process.env.ENV === 'production') {
   enableProdMode();
@@ -30,3 +34,7 @@ if (isPresent(AudibleFrequencyTesterAppComponent)) bootstrap(AudibleFrequencyTes
 if (isPresent(ChipmunkStretcherAppComponent)) bootstrap(ChipmunkStretcherAppComponent, [provideAudioCtx]);
 if (isPresent(OctavePitchButtonsAppComponent)) bootstrap(OctavePitchButtonsAppComponent, [provideAudioCtx]);
 if (isPresent(SingleOctavePitchButtonsAppComponent)) bootstrap(SingleOctavePitchButtonsAppComponent, [provideAudioCtx]);
+if (isPresent(FrequencyCurveSingleRampApp)) bootstrap(FrequencyCurveSingleRampApp);
+if (isPresent(FrequencyCurveTwoRampsApp)) bootstrap(FrequencyCurveTwoRampsApp);
+if (isPresent(FrequencyCurveTwoJoinedRampsApp)) bootstrap(FrequencyCurveTwoJoinedRampsApp);
+if (isPresent(FrequencyCurveTwoExponentialRampsApp)) bootstrap(FrequencyCurveTwoExponentialRampsApp);

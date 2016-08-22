@@ -2,6 +2,7 @@ import {
   Component,
   Input,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   ViewChild,
   ElementRef,
   AfterViewInit,
@@ -11,7 +12,7 @@ import {
 import { Seq } from 'immutable';
 
 @Component({
-  selector: 'snd-curve',
+  selector: 'snd-xy-curve',
   template: `
     <canvas #cnvs
       [height]="height"
@@ -20,15 +21,11 @@ import { Seq } from 'immutable';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CurveComponent implements AfterViewInit, OnChanges {
+export class XYCurveComponent implements AfterViewInit, OnChanges {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
   @Input() height: number;
-  @Input() values: Seq<number, number>;
-  @Input() maxValueCount: number;
-  @Input() rangeMin = -1;
-  @Input() rangeMax = 1;
-  @Input() drawAxis = true;
+  @Input() values: Seq<number, {x: number, y: number}>;
   width: number = 0;
 
   constructor(private elRef: ElementRef) {
@@ -60,9 +57,6 @@ export class CurveComponent implements AfterViewInit, OnChanges {
 
   private draw() {
     this.context.clearRect(0, 0, this.width, this.height);
-    if (this.drawAxis) {
-      this.drawAxisMarker();
-    }
     this.drawCurve();
   }
 
@@ -70,16 +64,22 @@ export class CurveComponent implements AfterViewInit, OnChanges {
     if (!this.width || !this.values) {
       return;
     }
-    const step = this.width / (this.maxValueCount - 1);
-    const firstStep = (this.maxValueCount - this.values.size) * step;
-    const extent = Math.abs(this.rangeMax - this.rangeMin);
+    const step = this.width / (this.values.size - 1);
+    const firstStep = 0;
+    
+    const xSort = this.values.sortBy(v => v.x);
+    const ySort = this.values.sortBy(v => v.y);
+
+    const minX = xSort.first().x;
+    const minY = ySort.first().y;
+
+    const xRange = xSort.last().x - minX;
+    const yRange = ySort.last().y - minY;
 
     this.context.beginPath();
     this.values.forEach((value, idx) => {
-      const x = firstStep + idx * step;
-      const valueExtent = value - this.rangeMin;
-      const valueRel = valueExtent / extent;
-      const y = this.height - 1 - valueRel * (this.height - 2);
+      const x = ((value.x - minX) / xRange) * this.width;
+      const y = this.height - ((value.y - minY) / yRange) * this.height;
       if (idx === 0) {
         this.context.moveTo(x, y);
       } else {
@@ -89,21 +89,5 @@ export class CurveComponent implements AfterViewInit, OnChanges {
     this.context.stroke();
   }
 
-  private drawAxisMarker() {
-    this.context.save();
-    this.context.setLineDash([2, 2]);
-    this.context.strokeStyle = '#888';
-    this.context.beginPath();
-    this.context.moveTo(0, this.getCenterY());
-    this.context.lineTo(this.width, this.getCenterY());
-    this.context.stroke();
-    this.context.restore();
-  }
-
-
-  private getCenterY() {
-    return this.height / 2;
-  }
-  
 
 }

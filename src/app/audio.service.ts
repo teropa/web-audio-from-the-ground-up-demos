@@ -36,7 +36,8 @@ export class AudioService {
   getBuffer(url: string) {
     return fetch(url)
       .then(res => res.arrayBuffer())
-      .then(buf => this.audioCtx.decodeAudioData(buf));
+      .then(buf => this.audioCtx.decodeAudioData(buf))
+      .catch(e => console.error(e));
   }
 
   getBufferSource(buf: AudioBuffer) {
