@@ -17,6 +17,7 @@ import { AudioService } from '../audio.service';
     </snd-curve>
     <snd-unit-circle
       [size]=size
+      [sizeMultiplier]=amplitude
       [numbersHeight]=numbersHeight
       [angle]=angle
       [connectHorizontal]=true
@@ -50,6 +51,9 @@ export class SineAnimationComponent implements OnInit, OnDestroy {
 
   @Input()
   frequency: number;
+
+  @Input()
+  amplitude = 1;
 
   angle: number = 0;
   collectedSines: List<number> = <List<number>>List.of();
@@ -97,7 +101,7 @@ export class SineAnimationComponent implements OnInit, OnDestroy {
     if (this.collectedSines.size >= this.maxCurveValueCount) {
       this.collectedSines = this.collectedSines
         .shift()
-        .push(Math.sin(this.angle));
+        .push(Math.sin(this.angle) * this.amplitude);
     } else {
       this.collectedSines = this.collectedSines.push(Math.sin(this.angle));
     }

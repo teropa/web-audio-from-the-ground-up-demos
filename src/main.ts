@@ -12,6 +12,8 @@ import { FrequencyCurveSingleRampApp } from './app/FrequencyCurveSingleRampApp.c
 import { FrequencyCurveTwoRampsApp } from './app/FrequencyCurveTwoRampsApp.component';
 import { FrequencyCurveTwoJoinedRampsApp } from './app/FrequencyCurveTwoJoinedRampsApp.component';
 import { FrequencyCurveTwoExponentialRampsApp } from './app/FrequencyCurveTwoExponentialRampsApp.component';
+import { AmplitudeControlledSineAnimationAppComponent } from './app/AmplitudeControlledSineAnimationApp.component';
+import { AudibleRangeTesterAppComponent } from './app/AudibleRangeTesterApp.component';
 
 if (process.env.ENV === 'production') {
   enableProdMode();
@@ -38,3 +40,5 @@ if (isPresent(FrequencyCurveSingleRampApp)) bootstrap(FrequencyCurveSingleRampAp
 if (isPresent(FrequencyCurveTwoRampsApp)) bootstrap(FrequencyCurveTwoRampsApp);
 if (isPresent(FrequencyCurveTwoJoinedRampsApp)) bootstrap(FrequencyCurveTwoJoinedRampsApp);
 if (isPresent(FrequencyCurveTwoExponentialRampsApp)) bootstrap(FrequencyCurveTwoExponentialRampsApp);
+if (isPresent(AmplitudeControlledSineAnimationAppComponent)) bootstrap(AmplitudeControlledSineAnimationAppComponent, [provideAudioCtx]);
+if (isPresent(AudibleRangeTesterAppComponent)) bootstrap(AudibleRangeTesterAppComponent, [provideAudioCtx]);

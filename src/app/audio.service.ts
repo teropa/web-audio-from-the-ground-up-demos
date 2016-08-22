@@ -28,10 +28,23 @@ export class AudioService {
   getSinewaveOscillator(frequency: number) {
     const oscillator = this.audioCtx.createOscillator();
     oscillator.frequency.value = frequency;
-    oscillator.connect(this.audioCtx.destination);
     oscillator.start();
     return oscillator;
   }
+
+  getConnectedSinewaveOscillator(frequency: number) {
+    const oscillator = this.getSinewaveOscillator(frequency);
+    oscillator.connect(this.audioCtx.destination);
+    return oscillator;
+  }
+
+  getConnectedGain(gain: number) {
+    const node = this.audioCtx.createGain();
+    node.gain.value = gain;
+    node.connect(this.audioCtx.destination);
+    return node;
+  }
+
 
   getBuffer(url: string) {
     return fetch(url)

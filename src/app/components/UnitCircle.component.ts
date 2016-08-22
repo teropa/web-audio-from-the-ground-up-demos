@@ -40,6 +40,7 @@ export class UnitCircleComponent implements AfterViewInit, OnChanges {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
   @Input() size: number;
+  @Input() sizeMultiplier: number = 1;
   @Input() numbersHeight = 20;
   @Input() angle: number = 0;
   @Input() connectHorizontal = false;
@@ -71,39 +72,41 @@ export class UnitCircleComponent implements AfterViewInit, OnChanges {
 
   private draw() {
     this.context.clearRect(0, 0, this.size, this.size);
+    if (this.sizeMultiplier > 0) {
+      const centerX = Math.floor(this.size * this.sizeMultiplier / 2);
+      const centerY = Math.floor(this.size / 2);
+      const radius = this.size * this.sizeMultiplier / 2 - 1;
 
-    const center = Math.floor(this.size / 2);
-    const radius = this.size / 2 - 1;
+      const lineEndX = centerX + radius * Math.cos(-this.angle);
+      const lineEndY = centerY + radius * Math.sin(-this.angle);
 
-    const lineEndX = center + radius * Math.cos(-this.angle);
-    const lineEndY = center + radius * Math.sin(-this.angle);
-
-    this.drawCircle(center, radius);
-    this.drawLine(center, lineEndX, lineEndY);
-    this.drawAngleMarker(center, radius);
-    this.drawAxisMarkers(center, radius);
-    this.drawSinMarker(center, lineEndX, lineEndY);
+      this.drawCircle(centerX, centerY, radius);
+      this.drawLine(centerX, centerY, lineEndX, lineEndY);
+      this.drawAngleMarker(centerX, centerY, radius);
+      this.drawAxisMarkers(centerX, centerY, radius);
+      this.drawSinMarker(centerY, lineEndX, lineEndY);
+    }
   }
 
-  private drawCircle(center: number, radius: number) {
+  private drawCircle(centerX: number, centerY: number, radius: number) {
     this.context.beginPath();
-    this.context.arc(center, center, radius, 0, Math.PI * 2);
+    this.context.arc(centerX, centerY, radius, 0, Math.PI * 2);
     this.context.stroke();
   }
 
-  private drawLine(center: number, lineEndX: number, lineEndY: number) {
-    this.context.moveTo(center, center);
+  private drawLine(centerX: number, centerY: number, lineEndX: number, lineEndY: number) {
+    this.context.moveTo(centerX, centerY);
     this.context.lineTo(lineEndX, lineEndY);
     this.context.stroke();
   }
   
-  private drawAngleMarker(center: number, radius: number) {
+  private drawAngleMarker(centerX: number, centerY: number, radius: number) {
     this.context.beginPath();
-    this.context.arc(center, center, radius / 10, 0, Math.PI * 2 - this.angle, true);
+    this.context.arc(centerX, centerY, radius / 10, 0, Math.PI * 2 - this.angle, true);
     this.context.stroke();
   }
 
-  private drawSinMarker(center: number, lineEndX: number, lineEndY: number) {
+  private drawSinMarker(centerY: number, lineEndX: number, lineEndY: number) {
     this.context.save();
     this.context.strokeStyle = '#ED146F';
     this.context.beginPath();
@@ -112,24 +115,24 @@ export class UnitCircleComponent implements AfterViewInit, OnChanges {
       this.context.setLineDash([1, 4]);
       this.context.lineTo(0, lineEndY);
     } else {
-      this.context.lineTo(lineEndX, center);
+      this.context.lineTo(lineEndX, centerY);
     }
     this.context.stroke();
     this.context.restore();
   }
 
-  private drawAxisMarkers(center: number, radius: number) {
+  private drawAxisMarkers(centerX: number, centerY: number, radius: number) {
     this.context.beginPath();
-    this.context.moveTo(center, center);
-    this.context.lineTo(center + radius, center);
+    this.context.moveTo(centerX, centerY);
+    this.context.lineTo(centerX + radius, centerY);
     this.context.stroke();
     
     this.context.save();
     this.context.setLineDash([2, 2]);
     this.context.strokeStyle = '#888';
     this.context.beginPath();
-    this.context.moveTo(center, center);
-    this.context.lineTo(center - radius, center);
+    this.context.moveTo(centerX, centerY);
+    this.context.lineTo(centerX - radius, centerY);
     this.context.stroke();
     this.context.restore();
   }

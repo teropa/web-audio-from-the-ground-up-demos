@@ -16,7 +16,7 @@ export class SinewavePlayer implements SoundPlayer {
   }
 
   start() {
-    this.osc = this.audio.getSinewaveOscillator(this.frequency);
+    this.osc = this.audio.getConnectedSinewaveOscillator(this.frequency);
   }
 
   stop() {
