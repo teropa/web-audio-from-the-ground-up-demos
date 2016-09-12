@@ -1,11 +1,11 @@
 import { Component, ElementRef } from '@angular/core';
 import { ControlledPlayerComponent } from './components/ControlledPlayer.component';
-import { OscilloscopeComponent } from './components/Oscilloscope.component';
+import { OscilloscopeComponent } from './components/Oscilloscope.component';
 import { AudioService } from './audio.service';
-import { SinewavePlayer } from './SineWavePlayer.service';
+import { SinewaveWithDecibelControlPlayer } from './SineWaveWithDecibelControlPlayer.service';
 
 @Component({
-  selector: 'snd-audible-frequency-tester-app',
+  selector: 'snd-amplitude-decibel-tester-app',
   template: `
     <snd-controlled-player [player]=player>
     </snd-controlled-player>
@@ -13,13 +13,14 @@ import { SinewavePlayer } from './SineWavePlayer.service';
     </snd-oscilloscope>
   `,
   directives: [ControlledPlayerComponent, OscilloscopeComponent],
-  providers: [AudioService, SinewavePlayer]
+  providers: [AudioService, SinewaveWithDecibelControlPlayer]
 })
-export class AudibleFrequencyTesterAppComponent {
+export class AmplitudeDecibelTesterAppComponent {
   analyser: AnalyserNode;
 
-  constructor(public player: SinewavePlayer, audio: AudioService) {  
+  constructor(public player: SinewaveWithDecibelControlPlayer, audio: AudioService) {
     this.analyser = audio.getAnalyser(2048);
+    player.compressWith(audio.getHardLimiter());
     player.analyseWith(this.analyser);
   }
 

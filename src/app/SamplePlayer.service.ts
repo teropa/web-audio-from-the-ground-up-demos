@@ -11,6 +11,7 @@ export class SamplePlayer implements SoundPlayer {
 
   private buffer: AudioBuffer;
   private source: AudioBufferSourceNode;
+  private analyser: AnalyserNode;
   private playbackRate = 1;
 
   constructor(private audio: AudioService) {    
@@ -23,12 +24,23 @@ export class SamplePlayer implements SoundPlayer {
   start() {
     this.source = this.audio.getBufferSource(this.buffer);
     this.source.loop = true;
+    if (this.analyser) {
+      this.source.connect(this.analyser);
+    }
   }
 
   stop() {
     if (this.source) {
       this.source.stop();
+      this.source.disconnect();
       this.source = null;
+    }
+  }
+
+  analyseWith(analyser: AnalyserNode) {
+    this.analyser = analyser;
+    if (this.source) {
+      this.source.connect(this.analyser);
     }
   }
 

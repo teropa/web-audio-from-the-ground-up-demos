@@ -14,7 +14,7 @@ import * as numeral from 'numeral';
   template: `
     <div class="numbers" [style.height.px]="numbersHeight">
       <span *ngIf="includeDegNumbers">sin({{ getAngleDeg() }}°) =</span>
-      sin({{ getAngleRad() }}rad) ≈
+      <span *ngIf="sizeMultiplier !== 1">{{ sizeMultiplier }}*</span>sin({{ getAngleRad() }}) ≈
       <span class="sin">{{ getAngleSin() }}</span>
     </div>
     <canvas #cnvs
@@ -145,7 +145,7 @@ export class UnitCircleComponent implements AfterViewInit, OnChanges {
     return numeral(this.angle).format('#.0')
   }
   private getAngleSin() {
-    return numeral(Math.sin(this.angle)).format('#.00')
+    return numeral(this.sizeMultiplier * Math.sin(this.angle)).format('#.00')
   }
 
 

@@ -14,6 +14,9 @@ import { FrequencyCurveTwoJoinedRampsApp } from './app/FrequencyCurveTwoJoinedRa
 import { FrequencyCurveTwoExponentialRampsApp } from './app/FrequencyCurveTwoExponentialRampsApp.component';
 import { AmplitudeControlledSineAnimationAppComponent } from './app/AmplitudeControlledSineAnimationApp.component';
 import { AudibleRangeTesterAppComponent } from './app/AudibleRangeTesterApp.component';
+import { AmplitudeOverdriveTesterAppComponent } from './app/AmplitudeOverdriveTesterApp.component';
+import { AmplitudeCurveDiscontinuityAppComponent } from './app/AmplitudeCurveDiscontinuityApp.component';
+import { AmplitudeDecibelTesterAppComponent } from './app/AmplitudeDecibelTesterApp.component';
 
 if (process.env.ENV === 'production') {
   enableProdMode();
@@ -42,3 +45,6 @@ if (isPresent(FrequencyCurveTwoJoinedRampsApp)) bootstrap(FrequencyCurveTwoJoine
 if (isPresent(FrequencyCurveTwoExponentialRampsApp)) bootstrap(FrequencyCurveTwoExponentialRampsApp);
 if (isPresent(AmplitudeControlledSineAnimationAppComponent)) bootstrap(AmplitudeControlledSineAnimationAppComponent, [provideAudioCtx]);
 if (isPresent(AudibleRangeTesterAppComponent)) bootstrap(AudibleRangeTesterAppComponent, [provideAudioCtx]);
+if (isPresent(AmplitudeOverdriveTesterAppComponent)) bootstrap(AmplitudeOverdriveTesterAppComponent, [provideAudioCtx]);
+if (isPresent(AmplitudeCurveDiscontinuityAppComponent)) bootstrap(AmplitudeCurveDiscontinuityAppComponent, [provideAudioCtx]);
+if (isPresent(AmplitudeDecibelTesterAppComponent)) bootstrap(AmplitudeDecibelTesterAppComponent, [provideAudioCtx]);

@@ -3,24 +3,24 @@ import { SoundPlayer } from './SoundPlayer';
 import { AudioService } from './audio.service';
 
 @Injectable()
-export class SinewaveWithGainPlayer implements SoundPlayer {
-  controlValueUnit = '';
-  controlValueMin = 0;
-  controlValueMax = 1;
-  controlValueStep = 0.01;
+export class SinewaveWithDecibelControlPlayer implements SoundPlayer {
+  controlValueUnit = 'dBFS';
+  controlValueMin = -30;
+  controlValueMax = 0;
+  controlValueStep = 3;
 
   private osc: OscillatorNode;
   private gain: GainNode;
   private compressor: AudioNode;
   private analyser: AnalyserNode;
-  private gainValue = 1;
+  private decibelValue = 0;
 
   constructor(private audio: AudioService) {    
   }
 
   start() {
     this.osc = this.audio.getSinewaveOscillator(440);
-    this.gain = this.audio.getGain(this.gainValue);
+    this.gain = this.audio.getGain(this.getGain(this.decibelValue));
     this.osc.connect(this.gain);
     if (this.compressor) {
       this.gain.connect(this.compressor);
@@ -61,14 +61,18 @@ export class SinewaveWithGainPlayer implements SoundPlayer {
   }
 
   get controlValue() {
-    return this.gainValue;
+    return this.decibelValue;
   }
 
   set controlValue(c) {
-    this.gainValue = c;
+    this.decibelValue = c;
     if (this.gain) {
-      this.gain.gain.value = c;
+      this.gain.gain.value =this.getGain(c);
     }
+  }
+
+  private getGain(decibels: number) {
+    return Math.pow(10, decibels / 20);
   }
 
 }

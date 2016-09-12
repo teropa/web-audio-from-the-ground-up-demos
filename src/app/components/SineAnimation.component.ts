@@ -103,7 +103,7 @@ export class SineAnimationComponent implements OnInit, OnDestroy {
         .shift()
         .push(Math.sin(this.angle) * this.amplitude);
     } else {
-      this.collectedSines = this.collectedSines.push(Math.sin(this.angle));
+      this.collectedSines = this.collectedSines.push(Math.sin(this.angle) * this.amplitude);
     }
   }
 

@@ -38,13 +38,37 @@ export class AudioService {
     return oscillator;
   }
 
-  getConnectedGain(gain: number) {
+  getGain(gain: number) {
     const node = this.audioCtx.createGain();
     node.gain.value = gain;
+    return node;    
+  }
+
+  getConnectedGain(gain: number) {
+    const node = this.getGain(gain);
     node.connect(this.audioCtx.destination);
     return node;
   }
 
+  getAnalyser(fftSize = 2048) {
+    const node = this.audioCtx.createAnalyser();
+    node.fftSize = fftSize;
+    return node;
+  }
+
+  getHardLimiter() {
+    const limiter = this.audioCtx.createScriptProcessor(4096, 1, 1);
+    limiter.onaudioprocess = (evt) => {
+      for (let ch = 0 ; ch < evt.outputBuffer.numberOfChannels ; ch++) {
+        let inputData = evt.inputBuffer.getChannelData(ch);
+        let outputData = evt.outputBuffer.getChannelData(ch);
+        for (let sample = 0 ; sample < inputData.length ; sample++) {
+          outputData[sample] = Math.min(1, Math.max(-1, inputData[sample]));
+        }
+      }
+    }
+    return limiter;
+  }
 
   getBuffer(url: string) {
     return fetch(url)
@@ -59,6 +83,10 @@ export class AudioService {
     source.connect(this.audioCtx.destination);
     source.start();
     return source;
+  }
+
+  toMaster(node: AudioNode) {
+    node.connect(this.audioCtx.destination);
   }
 
 }

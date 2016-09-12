@@ -1,6 +1,7 @@
 export interface SoundPlayer {
-  start(): void
-  stop(): void
+  start(): void;
+  stop(): void;
+  analyseWith(analyser: AnalyserNode): void;
 
   playing: boolean;
 
