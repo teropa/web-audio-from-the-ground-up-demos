@@ -17,6 +17,12 @@ import { AudibleRangeTesterAppComponent } from './app/AudibleRangeTesterApp.com
 import { AmplitudeOverdriveTesterAppComponent } from './app/AmplitudeOverdriveTesterApp.component';
 import { AmplitudeCurveDiscontinuityAppComponent } from './app/AmplitudeCurveDiscontinuityApp.component';
 import { AmplitudeDecibelTesterAppComponent } from './app/AmplitudeDecibelTesterApp.component';
+import { SineAdditionTesterAppComponent } from './app/SineAdditionTesterApp.component';
+import { SineCancelingTesterAppComponent } from './app/SineCancelingTesterApp.component';
+import { SineBeatingTesterAppComponent } from './app/SineBeatingTesterApp.component';
+import { HarmonicSeriesAppComponent } from './app/HarmonicSeriesApp.component';
+import { HarmonicSeriesChordAppComponent } from './app/HarmonicSeriesChordApp.component';
+import { HarmonicSeriesChordWithMissingFundamentalAppComponent } from './app/HarmonicSeriesChordWithMissingFundamentalApp.component';
 
 if (process.env.ENV === 'production') {
   enableProdMode();
@@ -48,3 +54,9 @@ if (isPresent(AudibleRangeTesterAppComponent)) bootstrap(AudibleRangeTesterAppCo
 if (isPresent(AmplitudeOverdriveTesterAppComponent)) bootstrap(AmplitudeOverdriveTesterAppComponent, [provideAudioCtx]);
 if (isPresent(AmplitudeCurveDiscontinuityAppComponent)) bootstrap(AmplitudeCurveDiscontinuityAppComponent, [provideAudioCtx]);
 if (isPresent(AmplitudeDecibelTesterAppComponent)) bootstrap(AmplitudeDecibelTesterAppComponent, [provideAudioCtx]);
+if (isPresent(SineAdditionTesterAppComponent)) bootstrap(SineAdditionTesterAppComponent, [provideAudioCtx]);
+if (isPresent(SineCancelingTesterAppComponent)) bootstrap(SineCancelingTesterAppComponent, [provideAudioCtx]);
+if (isPresent(SineBeatingTesterAppComponent)) bootstrap(SineBeatingTesterAppComponent, [provideAudioCtx]);
+if (isPresent(HarmonicSeriesAppComponent)) bootstrap(HarmonicSeriesAppComponent, [provideAudioCtx]);
+if (isPresent(HarmonicSeriesChordAppComponent)) bootstrap(HarmonicSeriesChordAppComponent, [provideAudioCtx]);
+if (isPresent(HarmonicSeriesChordWithMissingFundamentalAppComponent)) bootstrap(HarmonicSeriesChordWithMissingFundamentalAppComponent, [provideAudioCtx]);

@@ -1,4 +1,4 @@
-import { Component, Input, HostBinding, OnInit, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, HostBinding, OnInit, OnDestroy, Output } from '@angular/core';
 import { List } from 'immutable';
 import { UnitCircleComponent } from './UnitCircle.component';
 import { CurveComponent } from './Curve.component';
@@ -12,15 +12,16 @@ import { AudioService } from '../audio.service';
       [values]="collectedSines"
       [maxValueCount]="maxCurveValueCount"
       [drawAxis]=true
-      [style.marginTop.px]="numbersHeight"
+      [style.marginTop.px]="getNumbersHeight()"
       [style.right.px]="size">
     </snd-curve>
     <snd-unit-circle
       [size]=size
       [sizeMultiplier]=amplitude
-      [numbersHeight]=numbersHeight
+      [numbersHeight]=getNumbersHeight()
       [angle]=angle
       [connectHorizontal]=true
+      [includeNumbers]=includeNumbers
       [includeDegNumbers]=false
       [style.width.px]="size">
     </snd-unit-circle>
@@ -55,6 +56,15 @@ export class SineAnimationComponent implements OnInit, OnDestroy {
   @Input()
   amplitude = 1;
 
+  @Input()
+  phaseOffset = 0;
+
+  @Input()
+  includeNumbers = true;
+
+  @Output()
+  curveChange = new EventEmitter<List<number>>();
+
   angle: number = 0;
   collectedSines: List<number> = <List<number>>List.of();
   maxCurveValueCount = 250;
@@ -67,6 +77,7 @@ export class SineAnimationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.running = true;
+    this.angle += this.phaseOffset;
     this.runNext();
   }
 
@@ -76,9 +87,13 @@ export class SineAnimationComponent implements OnInit, OnDestroy {
 
   @HostBinding('style.height.px')
   get fullHeight() {
-    return this.size + this.numbersHeight;
+    return this.size + this.getNumbersHeight();
   }
 
+  getNumbersHeight() {
+    return this.includeNumbers ? this.numbersHeight : 0;
+  }
+  
   private runNext(lastTime = this.getCurrentTime()) {
     const step = Math.PI / 100;
     if (this.running) {
@@ -105,6 +120,7 @@ export class SineAnimationComponent implements OnInit, OnDestroy {
     } else {
       this.collectedSines = this.collectedSines.push(Math.sin(this.angle) * this.amplitude);
     }
+    this.curveChange.next(this.collectedSines);
   }
 
   private getCurrentTime() {

@@ -12,7 +12,7 @@ import * as numeral from 'numeral';
 @Component({
   selector: 'snd-unit-circle',
   template: `
-    <div class="numbers" [style.height.px]="numbersHeight">
+    <div class="numbers" *ngIf="includeNumbers" [style.height.px]="getNumbersHeight()">
       <span *ngIf="includeDegNumbers">sin({{ getAngleDeg() }}°) =</span>
       <span *ngIf="sizeMultiplier !== 1">{{ sizeMultiplier }}*</span>sin({{ getAngleRad() }}) ≈
       <span class="sin">{{ getAngleSin() }}</span>
@@ -44,6 +44,7 @@ export class UnitCircleComponent implements AfterViewInit, OnChanges {
   @Input() numbersHeight = 20;
   @Input() angle: number = 0;
   @Input() connectHorizontal = false;
+  @Input() includeNumbers = true;
   @Input() includeDegNumbers = true;
 
   @ViewChild('cnvs')
@@ -58,6 +59,10 @@ export class UnitCircleComponent implements AfterViewInit, OnChanges {
 
   getCanvasTop() {
     return this.canvas && this.canvas.getBoundingClientRect().top;
+  }
+
+  getNumbersHeight() {
+    return this.includeNumbers ? this.numbersHeight : 0;
   }
 
   ngAfterViewInit() {
