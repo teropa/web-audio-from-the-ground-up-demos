@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
+    <h1>Signals And Sine Waves</h1>
+
     <h2>Unit circle</h2>
     <snd-unit-circle-app size="200">
     </snd-unit-circle-app>
@@ -14,6 +16,14 @@
     <h2>Sine Wave Animation</h2>
     <snd-sine-animation-app size="120" frequency="1">
     </snd-sine-animation-app>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        window.bootstrapSignalsAndSineWaves();
+      });
+    </script>
+
+    <h1>Frequencies</h1>
 
     <h2>Sine Wave Animation with Frequency Control</h2>
     <snd-controlled-sine-animation-app size="120">
@@ -51,6 +61,14 @@
     <snd-frequency-curve-two-exponential-ramps-app>
     </snd-frequency-curve-two-exponential-ramps-app>
 
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        window.bootstrapFrequencies();
+      });
+    </script>
+
+    <h1>Amplitudes</h1>
+
     <h2>Sine Wave Animation with Amplitude Control</h2>
     <snd-amplitude-controlled-sine-animation-app size="120">
     </snd-amplitude-controlled-sine-animation-app>
@@ -63,13 +81,21 @@
     <snd-amplitude-overdrive-tester-app>
     </snd-amplitude-overdrive-tester-app>
 
-    <h2>Amplitude Curve with Disconuity</h2>
+    <h2>Amplitude Curve with Discontinuity</h2>
     <snd-amplitude-curve-discontinuity-app>
     </snd-amplitude-curve-discontinuity-app>
 
     <h2>Amplitude Decibel Tester</h2>
     <snd-amplitude-decibel-tester-app>
     </snd-amplitude-decibel-tester-app>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        window.bootstrapAmplitudes();
+      });
+    </script>
+
+    <h1>Additive Synthesis</h1>
 
     <h2>Sine Addition Tester</h2>
     <snd-sine-addition-tester-app size="250">
@@ -94,5 +120,11 @@
     <h2>Harmonic Series Chord (with missing fundamental)</h2> 
     <snd-harmonic-series-chord-with-missing-fundamental-app>
     </snd-harmonic-series-chord-with-missing-fundamental-app>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        window.bootstrapAdditiveSynthesis();
+      });
+    </script>
   </body>
 </html>
